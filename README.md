@@ -48,7 +48,7 @@ func main() {
 
 ```
 
-Example: [beego-example](./examples)
+Example: [echo-example](./examples)
 
 ![](./examples/imgs/img1.jpg)
 
