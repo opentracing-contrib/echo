@@ -1,7 +1,3 @@
-# echo
-a middleware for the echov4 web framework to use opentracing
-
-```go
 package main
 
 import (
@@ -45,11 +41,3 @@ func main() {
 
 	e.Logger.Fatal(e.Start(":1323"))
 }
-
-```
-
-Example: [beego-example](./examples)
-
-![](./examples/imgs/img1.jpg)
-
-![](./examples/imgs/img2.jpg)
