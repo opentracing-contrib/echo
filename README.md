@@ -36,7 +36,8 @@ func main() {
 
 	if flag == "true" {
 		// 3. use the middleware
-		e.Use(apmecho.Middleware(DefaultComponentName))
+		e.Use(apmecho.Middleware(opentracing.GlobalTracer(),
+			apmecho.ComponentName(DefaultComponentName)))
 	}
 
 	e.GET("/", func(c echo.Context) error {
