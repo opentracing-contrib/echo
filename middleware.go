@@ -25,7 +25,7 @@ func Middleware(componentName string) echo.MiddlewareFunc {
 			opts := mwOptions{
 				componentName: componentName,
 				opNameFunc: func(ec echo.Context) string {
-					return "HTTP " + ec.Request().Method + " " + ec.Path()
+					return ec.Request().Proto + " " + ec.Request().Method + " " + ec.Path()
 				},
 				spanObserver: func(span opentracing.Span, c echo.Context) {
 
