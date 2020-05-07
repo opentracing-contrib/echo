@@ -138,12 +138,6 @@ func Middleware(tracer opentracing.Tracer, o ...Option) echo.MiddlewareFunc {
 			r = r.WithContext(opentracing.ContextWithSpan(r.Context(), sp))
 			c.SetRequest(r)
 
-			// err := tracer.Inject(sp.Context(), opentracing.HTTPHeaders, carrier)
-			// if err != nil {
-			// 	panic(fmt.Sprint("SpanContext Inject Error:", err))
-			// }
-
-			// sct := &statusCodeTracker{context: c}
 			defer func() {
 				if v := recover(); v != nil {
 					err, ok := v.(error)
