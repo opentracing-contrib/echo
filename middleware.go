@@ -15,11 +15,24 @@ type mwOptions struct {
 	componentName string
 }
 
+type ErrorHandler func(echo.Context, error, *http.Request, opentracing.Span)
+
+func DefaultErrorHandlerError(c echo.Context, err error, _ *http.Request, sp opentracing.Span) {
+	if err != nil {
+		sp.SetTag("error", true)
+		c.Error(err)
+	}
+}
+
 func Middleware(componentName string) echo.MiddlewareFunc {
+	return MiddlewareWithErrorHandler(componentName, DefaultErrorHandlerError)
+}
+
+func MiddlewareWithErrorHandler(componentName string, errorHandler ErrorHandler) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 
-			r := c.Request();
+			r := c.Request()
 			tracer := opentracing.GlobalTracer()
 
 			opts := mwOptions{
@@ -56,8 +69,7 @@ func Middleware(componentName string) echo.MiddlewareFunc {
 			}
 
 			if err := next(c); err != nil {
-				sp.SetTag("error", true)
-				c.Error(err)
+				errorHandler(c, err, r, sp)
 			}
 
 			sp.SetTag("error", false)
