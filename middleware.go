@@ -18,10 +18,7 @@ type mwOptions struct {
 type ErrorHandler func(echo.Context, error, *http.Request, opentracing.Span)
 
 func DefaultErrorHandlerError(c echo.Context, err error, _ *http.Request, sp opentracing.Span) {
-	if err != nil {
-		sp.SetTag("error", true)
-		c.Error(err)
-	}
+	sp.SetTag("error", true)
 }
 
 func Middleware(componentName string) echo.MiddlewareFunc {
@@ -68,14 +65,16 @@ func MiddlewareWithErrorHandler(componentName string, errorHandler ErrorHandler)
 				panic("SpanContext Inject Error!")
 			}
 
-			if err := next(c); err != nil {
+			err = next(c)
+			if err != nil {
 				errorHandler(c, err, r, sp)
+			} else {
+				sp.SetTag("error", false)
 			}
-
-			sp.SetTag("error", false)
+			
 			ext.HTTPStatusCode.Set(sp, uint16(c.Response().Status))
 
-			return nil
+			return err
 
 		}
 	}
