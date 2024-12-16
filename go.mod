@@ -3,18 +3,18 @@ module github.com/flachnetz/echo-apm-middleware
 go 1.18
 
 require (
-	github.com/labstack/echo/v4 v4.1.8
-	github.com/opentracing/opentracing-go v1.1.0
+	github.com/labstack/echo/v4 v4.13.2
+	github.com/opentracing/opentracing-go v1.2.0
 )
 
 require (
-	github.com/labstack/gommon v0.2.9 // indirect
-	github.com/mattn/go-colorable v0.1.2 // indirect
-	github.com/mattn/go-isatty v0.0.8 // indirect
+	github.com/labstack/gommon v0.4.2 // indirect
+	github.com/mattn/go-colorable v0.1.13 // indirect
+	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
-	github.com/valyala/fasttemplate v1.0.1 // indirect
-	golang.org/x/crypto v0.0.0-20190605123033-f99c8df09eb5 // indirect
-	golang.org/x/net v0.0.0-20190607181551-461777fb6f67 // indirect
-	golang.org/x/sys v0.0.0-20190609082536-301114b31cce // indirect
-	golang.org/x/text v0.3.2 // indirect
+	github.com/valyala/fasttemplate v1.2.2 // indirect
+	golang.org/x/crypto v0.31.0 // indirect
+	golang.org/x/net v0.32.0 // indirect
+	golang.org/x/sys v0.28.0 // indirect
+	golang.org/x/text v0.21.0 // indirect
 )
