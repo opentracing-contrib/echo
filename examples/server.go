@@ -1,12 +1,13 @@
 package main
 
 import (
+	"net/http"
+	"os"
+
 	"github.com/labstack/echo/v4"
 	apmecho "github.com/opentracing-contrib/echo"
 	"github.com/opentracing-contrib/echo/examples/tracer"
 	"github.com/opentracing/opentracing-go"
-	"net/http"
-	"os"
 )
 
 const (
@@ -32,7 +33,8 @@ func main() {
 
 	if flag == "true" {
 		// 3. use the middleware
-		e.Use(apmecho.Middleware(DefaultComponentName))
+		e.Use(apmecho.Middleware(opentracing.GlobalTracer(),
+			apmecho.ComponentName(DefaultComponentName)))
 	}
 
 	e.GET("/", func(c echo.Context) error {
