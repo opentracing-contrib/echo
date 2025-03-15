@@ -6,7 +6,7 @@ replace github.com/opentracing-contrib/echo => ../
 
 require (
 	github.com/labstack/echo/v4 v4.13.3
-	github.com/opentracing-contrib/echo v0.0.0
+	github.com/opentracing-contrib/echo v0.1.0
 	github.com/opentracing/opentracing-go v1.2.0
 	github.com/uber/jaeger-client-go v2.30.0+incompatible
 )
