@@ -62,8 +62,17 @@ func Middleware(componentName string) echo.MiddlewareFunc {
 			if status := c.Response().Status; status >= 0 && status <= 65535 {
 				ext.HTTPStatusCode.Set(sp, uint16(status))
 			} else {
-				// Either use a default value or log the issue
-				ext.HTTPStatusCode.Set(sp, 0) // Using 0 to indicate invalid status
+				// Set a valid status code in the trace
+				ext.HTTPStatusCode.Set(sp, uint16(http.StatusInternalServerError))
+
+				// Update the actual response status if it hasn't been sent yet
+				if !c.Response().Committed {
+					c.Response().Status = http.StatusInternalServerError
+				}
+
+				// Add error tag to span
+				sp.SetTag("error.type", "invalid_status_code")
+				sp.SetTag("error.message", "Invalid HTTP status detected")
 			}
 
 			return nil
