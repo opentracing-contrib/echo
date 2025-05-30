@@ -19,6 +19,7 @@ type ErrorHandler func(echo.Context, error, *http.Request, opentracing.Span)
 
 func DefaultErrorHandlerError(c echo.Context, err error, _ *http.Request, sp opentracing.Span) {
 	sp.SetTag("error", true)
+	sp.SetTag("Status", "Error")
 }
 
 func Middleware(componentName string) echo.MiddlewareFunc {
@@ -70,8 +71,9 @@ func MiddlewareWithErrorHandler(componentName string, errorHandler ErrorHandler)
 				errorHandler(c, err, r, sp)
 			} else {
 				sp.SetTag("error", false)
+				sp.SetTag("Status", "Unset")
 			}
-			
+
 			ext.HTTPStatusCode.Set(sp, uint16(c.Response().Status))
 
 			return err
