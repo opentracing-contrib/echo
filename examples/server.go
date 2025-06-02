@@ -1,12 +1,13 @@
 package main
 
 import (
+	"net/http"
+	"os"
+
 	apmecho "github.com/flachnetz/echo-apm-middleware"
 	"github.com/labstack/echo/v4"
 	"github.com/opentracing-contrib/echo/examples/tracer"
 	"github.com/opentracing/opentracing-go"
-	"net/http"
-	"os"
 )
 
 const (
@@ -14,7 +15,6 @@ const (
 )
 
 func main() {
-
 	flag := os.Getenv("JAEGER_ENABLED")
 	if flag == "true" {
 		// 1. init tracer

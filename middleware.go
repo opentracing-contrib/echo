@@ -1,11 +1,12 @@
 package apm
 
 import (
+	"net/http"
+	"net/url"
+
 	"github.com/labstack/echo/v4"
 	"github.com/opentracing/opentracing-go"
 	"github.com/opentracing/opentracing-go/ext"
-	"net/http"
-	"net/url"
 )
 
 type mwOptions struct {
@@ -19,7 +20,6 @@ type ErrorHandler func(echo.Context, error, *http.Request, opentracing.Span)
 
 func DefaultErrorHandlerError(c echo.Context, err error, _ *http.Request, sp opentracing.Span) {
 	sp.SetTag("error", true)
-	sp.SetTag("Status", "Error")
 }
 
 func Middleware(componentName string) echo.MiddlewareFunc {
@@ -29,7 +29,6 @@ func Middleware(componentName string) echo.MiddlewareFunc {
 func MiddlewareWithErrorHandler(componentName string, errorHandler ErrorHandler) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
-
 			r := c.Request()
 			tracer := opentracing.GlobalTracer()
 
@@ -39,7 +38,6 @@ func MiddlewareWithErrorHandler(componentName string, errorHandler ErrorHandler)
 					return "HTTP " + r.Method + " " + r.URL.Path
 				},
 				spanObserver: func(span opentracing.Span, r *http.Request) {
-
 				},
 				urlTagFunc: func(u *url.URL) string {
 					return u.String()
@@ -61,7 +59,6 @@ func MiddlewareWithErrorHandler(componentName string, errorHandler ErrorHandler)
 			c.SetRequest(r)
 
 			err := tracer.Inject(sp.Context(), opentracing.HTTPHeaders, carrier)
-
 			if err != nil {
 				panic("SpanContext Inject Error!")
 			}
@@ -71,13 +68,11 @@ func MiddlewareWithErrorHandler(componentName string, errorHandler ErrorHandler)
 				errorHandler(c, err, r, sp)
 			} else {
 				sp.SetTag("error", false)
-				sp.SetTag("Status", "Unset")
 			}
 
 			ext.HTTPStatusCode.Set(sp, uint16(c.Response().Status))
 
 			return err
-
 		}
 	}
 }
