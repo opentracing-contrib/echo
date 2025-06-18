@@ -66,8 +66,6 @@ func MiddlewareWithErrorHandler(componentName string, errorHandler ErrorHandler)
 			err = next(c)
 			if err != nil {
 				errorHandler(c, err, r, sp)
-			} else {
-				sp.SetTag("error", false)
 			}
 
 			ext.HTTPStatusCode.Set(sp, uint16(c.Response().Status))
