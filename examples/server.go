@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v5"
 	apmecho "github.com/opentracing-contrib/echo"
 	"github.com/opentracing-contrib/echo/examples/tracer"
 	"github.com/opentracing/opentracing-go"
